@@ -1,0 +1,3 @@
+spring:
+  application:
+    name: capsule_temporelle
