@@ -1,0 +1,25 @@
+package com.stackprotocol.capsule_temporelle.dto;
+
+import java.time.LocalDate;
+
+public class TimeCapsulePost {
+    private String message;
+
+    private LocalDate launchDate;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public LocalDate getLaunchDate() {
+        return launchDate;
+    }
+
+    public void setLaunchDate(LocalDate launchDate) {
+        this.launchDate = launchDate;
+    }
+}
