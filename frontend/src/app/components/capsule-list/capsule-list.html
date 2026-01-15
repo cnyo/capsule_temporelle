@@ -1,0 +1,10 @@
+<section class="capsules">
+  <h2>Capsules scellées</h2>
+  @if(capsuleResumes().length > 0) {
+    @for (capsuleResume of capsuleResumes() ; track capsuleResume.id) {
+      <app-capsule-list-card [capsuleResume]="capsuleResume" />
+    } @empty {
+      <p>Aucune capsule disponible</p>
+    }
+  }
+</section>

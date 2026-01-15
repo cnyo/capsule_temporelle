@@ -1,0 +1,19 @@
+<section class="home">
+  <header class="title">
+    <h1>Capsule Temporelle</h1>
+    <p>Scelle un message pour le futur</p>
+  </header>
+
+  <!-- Messages de feedback -->
+@if (requestStatus() == "success") {
+  <div class="feedback success">
+    La capsule a été scellée avec succès.
+  </div>
+} @else if (requestStatus() == "error") {
+  <div class="feedback error">
+    Une erreur est survenue lors de la création de la capsule.
+  </div>
+}
+<app-capsule-form (formSubmitted)="onSubmitForm($event)" />
+<app-capsule-list />
+</section>

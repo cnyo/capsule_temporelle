@@ -1,0 +1,7 @@
+<article class="capsule">
+  @if (capsuleResume().launched) {
+    <a [routerLink]="['/capsule', capsuleResume().id]" class="capsule-date">Ouvrir la capsule du {{ capsuleResume().launchDate }}</a>
+  } @else {
+    <span>À ouvrir le : {{ capsuleResume().launchDate }}</span>
+  }
+</article>

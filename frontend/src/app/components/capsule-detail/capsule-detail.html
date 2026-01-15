@@ -1,0 +1,15 @@
+<section class="capsule-detail">
+
+  <a routerLink="/" class="btn-back">
+    ← Retour à l’accueil
+  </a>
+
+  @if (capsule(); as capsule) {
+    <article class="capsule-content">
+      <h2>Message de la capsule</h2>
+      <p>
+        {{ capsule.message }}
+      </p>
+    </article>
+  }
+</section>
