@@ -1,4 +1,4 @@
-<section class="capsules">
+<div class="card list">
   <h2>Capsules scellées</h2>
   @if(capsuleResumes().length > 0) {
     @for (capsuleResume of capsuleResumes() ; track capsuleResume.id) {
@@ -7,4 +7,4 @@
       <p>Aucune capsule disponible</p>
     }
   }
-</section>
+</div>

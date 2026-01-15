@@ -1,15 +1,17 @@
-<section class="capsule-detail">
+<section class="detail card">
 
-  <a routerLink="/" class="btn-back">
+  <button routerLink="/" class="btn-back">
     ← Retour à l’accueil
-  </a>
+  </button>
+
+  <h2>Capsule ouverte</h2>
 
   @if (capsule(); as capsule) {
-    <article class="capsule-content">
-      <h2>Message de la capsule</h2>
-      <p>
+    <div class="message">
         {{ capsule.message }}
-      </p>
-    </article>
+    </div>
+    <p class="date">
+      Capsule scellée le {{ capsule.createdDate | date:'longDate' }}
+    </p>
   }
 </section>

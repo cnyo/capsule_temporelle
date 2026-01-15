@@ -4,11 +4,13 @@ import {CapsuleService} from '../../service/capsule.service';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {Capsule} from '../../modele/capsule';
 import {filter, map, switchMap, tap} from 'rxjs';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-capsule-detail',
   imports: [
-    RouterLink
+    RouterLink,
+    DatePipe
   ],
   templateUrl: './capsule-detail.html',
   styleUrl: './capsule-detail.scss',

@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+:root {
+  --bg-main: #0b0c10;
+  --bg-card: #11131a;
+  --red-neon: #e50914;
+  --red-glow: rgba(229, 9, 20, 0.6);
+  --text-main: #eaeaea;
+  --text-muted: #9ca3af;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #1b1f3b;
+  background: linear-gradient(90deg,rgba(0, 0, 0, 1) 0%, rgba(27, 31, 59, 1) 50%, rgba(0, 0, 0, 1) 100%);
+  font-family: 'Montserrat', sans-serif;
+  color: var(--text-main);
+}
+
+h1, h2, h3 {
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+button {
+  background: transparent;
+  border: 2px solid var(--red-neon);
+  color: var(--red-neon);
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: var(--red-neon);
+    color: #000;
+    box-shadow: 0 0 15px var(--red-glow);
+  }
+}
+
+input, textarea {
+  width: 100%;
+  background: #0f1117;
+  border: 1px solid #333;
+  color: var(--text-main);
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+
+  &:focus {
+    outline: none;
+    border-color: var(--red-neon);
+    box-shadow: 0 0 8px var(--red-glow);
+  }
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid #222;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+}

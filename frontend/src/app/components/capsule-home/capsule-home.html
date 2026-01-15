@@ -6,11 +6,11 @@
 
   <!-- Messages de feedback -->
 @if (requestStatus() == "success") {
-  <div class="feedback success">
+  <div class="alert success">
     La capsule a été scellée avec succès.
   </div>
 } @else if (requestStatus() == "error") {
-  <div class="feedback error">
+  <div class="alert error">
     Une erreur est survenue lors de la création de la capsule.
   </div>
 }
