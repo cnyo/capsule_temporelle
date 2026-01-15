@@ -53,31 +53,19 @@ public class ApiController {
     }
 
     @GetMapping("/api/capsules/{id}")
-    public ResponseEntity<Map<String, Object>> getTimeCapsule(@PathVariable UUID id) {
+    public ResponseEntity<?> getTimeCapsule(@PathVariable UUID id) {
         try {
             TimeCapsule capsule = timeCapsuleService.getLaunchedCapsule(id);
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", true);
-            response.put("data", capsule);
-
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+            return ResponseEntity.ok(capsule);
         } catch (CapsuleNotFoundException e) {
             System.out.println(HttpStatus.NOT_FOUND);
-            return buildError(HttpStatus.NOT_FOUND, e.getMessage());
+            return ResponseEntity.notFound().build();
         } catch (CapsuleNotLaunchedException e) {
             System.out.println(HttpStatus.FORBIDDEN);
-            return buildError(HttpStatus.FORBIDDEN, e.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } catch (Exception e) {
             System.out.println(HttpStatus.INTERNAL_SERVER_ERROR);
-            return buildError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-    }
-
-    private ResponseEntity<Map<String, Object>> buildError(HttpStatus status, String message) {
-        return ResponseEntity.status(status)
-                .body(Map.of(
-                        "success", false,
-                        "message", message
-                ));
     }
 }
