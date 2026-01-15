@@ -1,22 +1,17 @@
 package com.stackprotocol.capsule_temporelle.dto;
 
-import jakarta.validation.constraints.NotBlank;
-
 import java.time.LocalDate;
 
-public class TimeCapsulePost {
-    @NotBlank
-    private String message;
-
-    @NotBlank
+public class TimeCapsuleResume {
+    private String id;
     private LocalDate launchDate;
 
-    public String getMessage() {
-        return message;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public String getId() {
+        return id;
     }
 
     public LocalDate getLaunchDate() {
@@ -25,5 +20,9 @@ public class TimeCapsulePost {
 
     public void setLaunchDate(LocalDate launchDate) {
         this.launchDate = launchDate;
+    }
+
+    public boolean isLaunched() {
+        return LocalDate.now().isAfter(launchDate);
     }
 }

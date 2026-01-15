@@ -1,6 +1,7 @@
 package com.stackprotocol.capsule_temporelle.service;
 
 import com.stackprotocol.capsule_temporelle.dto.TimeCapsulePost;
+import com.stackprotocol.capsule_temporelle.dto.TimeCapsuleResume;
 import com.stackprotocol.capsule_temporelle.exception.CapsuleLaunchDateException;
 import com.stackprotocol.capsule_temporelle.exception.CapsuleNotFoundException;
 import com.stackprotocol.capsule_temporelle.exception.CapsuleNotLaunchedException;
@@ -54,7 +55,7 @@ public class TimeCapsuleService {
         }
     }
 
-    public TimeCapsule getLaunchedCapsule(UUID uuid) throws CapsuleNotFoundException, CapsuleNotLaunchedException {
+    public TimeCapsule getLaunchedCapsule(UUID uuid) throws CapsuleNotFoundException, CapsuleNotLaunchedException, IOException, CapsuleLaunchDateException {
         lock.readLock().lock();
 
         try {
@@ -63,6 +64,7 @@ public class TimeCapsuleService {
             ).findFirst().orElse(null);
 
             if (capsule == null) {
+                System.out.println(capsule);
                 throw new CapsuleNotFoundException("La capsule n'existe pas.");
             }
 
@@ -75,18 +77,16 @@ public class TimeCapsuleService {
             }
 
             return capsule;
-        } catch (IOException e) {
-            LOGGER.severe("Erreur lors de la lecture du fichier JSON: " + e.getMessage());
-            throw new RuntimeException("Erreur lors de la récupération de la capsule", e);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            LOGGER.severe("Erreur lors de la lecture du fichier JSON: " + e.getMessage());
+            throw e;
         } finally {
             lock.readLock().unlock();
         }
     }
 
-    public List<TimeCapsule> getAllCapsules() {
-        return objectMapper.readValue(filePath.toFile(), new TypeReference<List<TimeCapsule>>() {});
+    public List<TimeCapsuleResume> getAllCapsules() {
+        return objectMapper.readValue(filePath.toFile(), new TypeReference<List<TimeCapsuleResume>>() {});
     }
 
     public void writeCapsules(List<TimeCapsule> capsules) {
