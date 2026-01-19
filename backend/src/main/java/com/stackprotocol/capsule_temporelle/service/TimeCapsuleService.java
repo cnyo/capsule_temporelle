@@ -16,8 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Logger;
@@ -31,8 +30,14 @@ public class TimeCapsuleService {
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     public TimeCapsuleService(@Value("${capsule.file.path}") String filePath, ObjectMapper objectMapper) {
-        this.filePath = Paths.get(filePath);
         this.objectMapper = objectMapper;
+        // Résoudre le chemin absolu
+        Path path = Paths.get(filePath);
+        if (!path.isAbsolute()) {
+            path = Paths.get(System.getProperty("user.dir"), filePath);
+        }
+        this.filePath = path;
+        LOGGER.info("Chemin du fichier de capsules: " + this.filePath.toAbsolutePath());
         // Créer les dossier/fichier s'ils n'existent pas
         initFile();
     }
@@ -116,7 +121,22 @@ public class TimeCapsuleService {
      * @throws RuntimeException if an error occurs while reading the data source.
      */
     public List<TimeCapsuleResume> getAllCapsules() {
-        return objectMapper.readValue(filePath.toFile(), new TypeReference<List<TimeCapsuleResume>>() {});
+        lock.readLock().lock();
+        try {
+            List<TimeCapsuleResume> capsules = objectMapper.readValue(filePath.toFile(), new TypeReference<List<TimeCapsuleResume>>() {});
+            capsules.sort(new Comparator<TimeCapsuleResume>() {
+                @Override
+                public int compare(TimeCapsuleResume capsule1, TimeCapsuleResume capsule2) {
+                    return capsule1.getLaunchDate().compareTo(capsule2.getLaunchDate());
+                }
+            });
+            return capsules;
+        } catch (Exception e) {
+            LOGGER.severe("Erreur lors de la lecture du fichier JSON: " + e.getMessage());
+            throw new RuntimeException(e);
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     /**
@@ -125,8 +145,13 @@ public class TimeCapsuleService {
      * @param capsules the list of TimeCapsule objects to export to the persistent storage
      */
     public void writeCapsules(List<TimeCapsule> capsules) {
-        objectMapper.writerWithDefaultPrettyPrinter()
-                .writeValue(filePath.toFile(), capsules);
+        try {
+            objectMapper.writerWithDefaultPrettyPrinter()
+                    .writeValue(filePath.toFile(), capsules);
+        } catch (Exception e) {
+            LOGGER.severe("Erreur lors de l'écriture du fichier JSON: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.stackprotocol.capsule_temporelle.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
@@ -8,7 +9,7 @@ public class TimeCapsulePost {
     @NotBlank
     private String message;
 
-    @NotBlank
+    @NotNull
     private LocalDate launchDate;
 
     public String getMessage() {
