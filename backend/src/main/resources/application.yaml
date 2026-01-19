@@ -7,4 +7,4 @@ server:
 
 capsule:
   file:
-    path: "../data/capsule.json"
+    path: ${CAPSULE_FILE_PATH:../data/capsule.json}

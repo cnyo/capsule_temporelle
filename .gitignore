@@ -36,5 +36,5 @@ build/
 node_modules/
 dist/
 .env
-data/
+backend/data/
 *.json

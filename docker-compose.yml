@@ -1,0 +1,40 @@
+
+version: '3.9'
+
+services:
+  # Frontend Angular
+  frontend:
+    build:
+      context: frontend
+    container_name: capsule-frontend
+    ports:
+      - "4200:8080"
+    environment:
+      - NODE_ENV=${NODE_ENV}
+    networks:
+      - capsule-network
+    restart: unless-stopped
+    labels:
+      - "com.example.description=Frontend Angular"
+
+  # Backend Spring Boot
+  backend:
+    build:
+      context: backend
+    container_name: capsule-backend
+    ports:
+      - "9005:9005"
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - CAPSULE_FILE_PATH=${CAPSULE_FILE_PATH}
+    volumes:
+      - ./data/capsule.json:/app/data/capsule.json
+    networks:
+      - capsule-network
+    restart: unless-stopped
+    labels:
+      - "com.example.description=Backend Spring Boot"
+
+networks:
+  capsule-network:
+    driver: bridge
