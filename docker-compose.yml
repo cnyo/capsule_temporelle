@@ -4,8 +4,7 @@ version: '3.9'
 services:
   # Frontend Angular
   frontend:
-    build:
-      context: frontend
+    image: ydiouy/time-capsule-frontend:latest
     container_name: capsule-frontend
     ports:
       - "4200:8080"
@@ -19,8 +18,7 @@ services:
 
   # Backend Spring Boot
   backend:
-    build:
-      context: backend
+    image: ydiouy/time-capsule-backend:latest
     container_name: capsule-backend
     ports:
       - "9005:9005"
