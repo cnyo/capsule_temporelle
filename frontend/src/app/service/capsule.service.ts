@@ -17,7 +17,7 @@ export class CapsuleService {
 
   readonly capsuleResumes = this._capsuleResumes.asReadonly();
   readonly status = this._status.asReadonly();
-  readonly uri :string = 'api/capsules';
+  readonly uri :string = 'http://127.0.0.1:9005/api/capsules';
 
   loadCapsules() {
     // return this.http.get<Capsule[]>('http://127.0.0.1:9005/api/capsules');
@@ -27,7 +27,7 @@ export class CapsuleService {
       },
       error: (error) => {
         console.log('Erreur lors du chargement', error);
-        this._status.set('error')
+        this._status.set('loading_error')
         throw error;
       }
     });

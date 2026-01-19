@@ -4,7 +4,7 @@
     <p>Scelle un message pour le futur</p>
   </header>
 
-  <!-- Messages de feedback -->
+<!-- Messages de feedback -->
 @if (requestStatus() == "success") {
   <div class="alert success">
     La capsule a été scellée avec succès.
@@ -12,6 +12,10 @@
 } @else if (requestStatus() == "error") {
   <div class="alert error">
     Une erreur est survenue lors de la création de la capsule.
+  </div>
+} @else if (requestStatus() == "loading_error") {
+  <div class="alert error">
+    Une erreur est survenue lors du chargement des capsules.
   </div>
 }
 <app-capsule-form (formSubmitted)="onSubmitForm($event)" />
