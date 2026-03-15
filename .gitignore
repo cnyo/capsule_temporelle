@@ -37,4 +37,5 @@ node_modules/
 dist/
 .env
 backend/data/
-*.json
+package-lock.json
+tsconfig*.json.tsbuildinfo
