@@ -2,6 +2,10 @@ spring:
   application:
     name: capsule_temporelle
 
+cors:
+  allowed:
+    origins: ${CORS_ALLOWED_ORIGINS:http://localhost:4200,http://127.0.0.1:4200,http://localhost:9004,http://127.0.0.1:9004}
+
 capsule:
   file:
     path: ${CAPSULE_FILE_PATH:../data/capsule.json}
