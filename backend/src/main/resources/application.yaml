@@ -2,9 +2,6 @@ spring:
   application:
     name: capsule_temporelle
 
-server:
-  port: 9005
-
 capsule:
   file:
     path: ${CAPSULE_FILE_PATH:../data/capsule.json}

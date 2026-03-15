@@ -1,15 +1,38 @@
-FROM eclipse-temurin:25-jdk-jammy
+# Multi-stage build for Spring Boot backend
+FROM eclipse-temurin:25-jdk-alpine AS builder
 
 WORKDIR /app
 
-# Copier le fichier JAR (ou adapter selon votre build)
-COPY target/capsule_temporelle-*.jar app.jar
+# Copy Maven wrapper and pom.xml
+COPY .mvn/ .mvn/
+COPY mvnw pom.xml ./
 
-# Exposer le port
-EXPOSE 9005
+# Download dependencies (cached layer)
+RUN ./mvnw dependency:go-offline
 
-# Variables d'environnement par défaut
+# Copy source code
+COPY src ./src
+
+# Build the application
+RUN ./mvnw clean package -DskipTests
+
+# Runtime stage
+FROM eclipse-temurin:25-jre-alpine
+
+WORKDIR /app
+
+# Create data directory for capsule.json
+RUN mkdir -p /app/data
+
+# Copy the JAR from builder stage
+COPY --from=builder /app/target/*.jar app.jar
+
+# Expose port
+EXPOSE 8080
+
+# Environment variables
 ENV SPRING_PROFILES_ACTIVE=prod
+ENV CAPSULE_FILE_PATH=/app/data/capsule.json
 
-# Démarrer l'application
+# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]

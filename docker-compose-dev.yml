@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: capsule-backend-dev
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-dev}
+      - CAPSULE_FILE_PATH=/app/data/capsule.json
+    volumes:
+      # Volume pour persister les données en développement
+      - ./data:/app/data
+    networks:
+      - capsule-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        CONFIGURATION: development
+    container_name: capsule-frontend-dev
+    ports:
+      - "9006:8080"
+    depends_on:
+      - backend
+    networks:
+      - capsule-network
+    restart: unless-stopped
+    environment:
+      - BACKEND_URL=http://backend:8080
+
+networks:
+  capsule-network:
+    driver: bridge

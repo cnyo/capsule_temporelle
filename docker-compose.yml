@@ -1,38 +1,47 @@
-
-version: '3.9'
-
 services:
-  # Frontend Angular
-  frontend:
-    image: ydiouy/time-capsule-front
-    container_name: capsule-frontend
-    ports:
-      - "4200:8080"
-    environment:
-      - NODE_ENV=${NODE_ENV}
-    networks:
-      - capsule-network
-    restart: unless-stopped
-    labels:
-      - "com.example.description=Frontend Angular"
-
-  # Backend Spring Boot
   backend:
-    image: ydiouy/time-capsule-backend
-    container_name: capsule-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: capsule-backend-prod
     ports:
-      - "9005:9005"
+      - "9005:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - CAPSULE_FILE_PATH=${CAPSULE_FILE_PATH}
-    volumes:
-      - ./data/capsule.json:/app/data/capsule.json
+      - SPRING_PROFILES_ACTIVE=prod
+      - CAPSULE_FILE_PATH=/app/data/capsule.json
+    # Option 1: Sans volume (données réinitialisées au redémarrage)
+    # Pas de volumes déclarés - le fichier sera créé dans le container
+
+    # Option 2: Avec volume si vous voulez persister les données
+    # volumes:
+    #   - capsule-data:/app/data
+
     networks:
       - capsule-network
-    restart: unless-stopped
-    labels:
-      - "com.example.description=Backend Spring Boot"
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        CONFIGURATION: production
+    container_name: capsule-frontend-prod
+    ports:
+      - "9004:8080"
+    depends_on:
+      - backend
+    networks:
+      - capsule-network
+    restart: always
+    environment:
+      - BACKEND_URL=http://backend:8080
 
 networks:
   capsule-network:
     driver: bridge
+
+# Décommentez cette section si vous voulez persister les données
+# volumes:
+#   capsule-data:
+#     driver: local
