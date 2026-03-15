@@ -17,7 +17,16 @@ export class CapsuleService {
 
   readonly capsuleResumes = this._capsuleResumes.asReadonly();
   readonly status = this._status.asReadonly();
-  readonly uri :string = 'http://127.0.0.1:9005/api/capsules';
+
+  // Determine API URL based on environment
+  readonly uri: string = (() => {
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return 'http://127.0.0.1:9005/api/capsules';
+    }
+    // URL relative pour la production - nginx fera le proxy
+    return '/api/capsules';
+  })();
 
   loadCapsules() {
     // return this.http.get<Capsule[]>('http://127.0.0.1:9005/api/capsules');
