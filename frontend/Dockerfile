@@ -28,7 +28,7 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 # Copy built application from builder stage
-COPY --from=builder /app/dist/browser /usr/share/nginx/html
+COPY --from=builder /app/dist/TimeCapsule/browser /usr/share/nginx/html
 
 # Expose port
 EXPOSE 8080
