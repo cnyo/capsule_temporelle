@@ -29,7 +29,7 @@ services:
         CONFIGURATION: production
     container_name: capsule-frontend-prod
     ports:
-      - "9004:8080"
+      - "9004:9004"
     depends_on:
       - backend
     networks:
@@ -37,6 +37,12 @@ services:
     restart: always
     environment:
       - BACKEND_URL=${BACKEND_URL}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.capsule-frontend.rule=Host(`capsule.dandadev.cloud`)"
+      - "traefik.http.routers.capsule-frontend.entrypoints=websecure"
+      - "traefik.http.routers.capsule-frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.capsule-frontend.loadbalancer.server.port=8080"
 
 networks:
   capsule-network:
