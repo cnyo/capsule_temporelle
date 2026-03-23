@@ -36,7 +36,7 @@ services:
       - capsule-network
     restart: always
     environment:
-      - BACKEND_URL=http://backend:8080
+      - BACKEND_URL=${BACKEND_URL}
 
 networks:
   capsule-network:
