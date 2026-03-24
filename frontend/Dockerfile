@@ -31,14 +31,14 @@ RUN chmod +x /docker-entrypoint.sh
 COPY --from=builder /app/dist/TimeCapsule/browser /usr/share/nginx/html
 
 # Expose port
-EXPOSE 9004
+EXPOSE 8080
 
 # Environment variable for backend URL
 ENV BACKEND_URL=http://backend:9004
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget --quiet --tries=1 --spider http://localhost:9004 || exit 1
+  CMD wget --quiet --tries=1 --spider http://localhost:8080 || exit 1
 
 # Run entrypoint script
 ENTRYPOINT ["/docker-entrypoint.sh"]
